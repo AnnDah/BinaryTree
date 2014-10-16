@@ -13,6 +13,7 @@ namespace BinaryTreeAssignment
     {
         static void Main(string[] args)
         {
+            MainMenu menu = new MainMenu();
         }
     }
 }

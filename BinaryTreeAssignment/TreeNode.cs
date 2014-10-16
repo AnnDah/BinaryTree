@@ -12,14 +12,32 @@ namespace BinaryTreeAssignment
     class TreeNode
     {
         private int value;
-        private TreeNode left;
-        private TreeNode right;
+        public TreeNode left;
+        public TreeNode right;
 
         public TreeNode(int value)
         {
             this.value = value;
             left = null;
             right = null;
+        }
+
+        public int Value
+        {
+            get { return this.value; }
+            set { this.value = value; }
+        }
+
+        public TreeNode Left
+        {
+            get { return left; }
+            set { left = value; }
+        }
+
+        public TreeNode Right
+        {
+            get { return right; }
+            set { right = value; }
         }
     }
 }
