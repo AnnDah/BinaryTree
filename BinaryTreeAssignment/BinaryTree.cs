@@ -9,11 +9,22 @@ using System.Threading.Tasks;
 
 namespace BinaryTreeAssignment
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class BinaryTree
     {
         private TreeNode root = null;
-        private int size = 0;
+        private TreeNode parentNode = null;
         private int count = 0;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int Count
+        {
+            get { return count; }
+        }
 
         /// <summary>
         /// Metoden 'Insert' lägger till ett värde i trädet genom att anropa metoden i det fallet då trädet redan har noder. 
@@ -30,12 +41,13 @@ namespace BinaryTreeAssignment
                 {
                     root = node;
                 }
+
                 else
                 {
-                    Add(node, ref root);
-                    count++;
+                    Add(node, ref root); 
                 }
-                return node; //in the example from teacher this is inside else
+                count++;
+                return node;
             }
             catch(Exception)
             {
@@ -54,6 +66,11 @@ namespace BinaryTreeAssignment
         /// <param name="tree"></param>
         public void Add(TreeNode node, ref TreeNode tree)
         {
+            if (FindValue(node.Value) != null)
+            {
+                throw new Exception();
+            }
+           
             if (tree == null)
             {
                 tree = node;
@@ -62,11 +79,10 @@ namespace BinaryTreeAssignment
             {
                 Add(node, ref tree.left);
             }
-            else
+            else if (node.Value > tree.Value)
             {
                 Add(node, ref tree.right);
             }
-            return;
         }
 
         /// <summary>
@@ -81,10 +97,14 @@ namespace BinaryTreeAssignment
         public TreeNode FindValue(int value)
         {
             if (root != null)
-                return FindParent(value, ref root);
+            {
+                return Find(value, ref root);
+            }
 
             else
+            {
                 return null;
+            }
         }
 
         /// <summary>
@@ -95,26 +115,28 @@ namespace BinaryTreeAssignment
         /// <param name="value"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        private TreeNode FindParent(int value, ref TreeNode parent)
+        private TreeNode Find(int value, ref TreeNode node)
         {
-            if (parent == null)
+            if (node == null)
             {
                 return null;
             }
 
-            else if (parent.Value == value)
+            else if (node.Value == value)
             {
-                return parent;
+                return node;
             }
 
-            else if (parent.Value < value)
+            else if (value < node.Value)
             {
-                return FindParent(value, ref parent.left);
+                parentNode = node;
+                return Find(value, ref node.left);
             }
 
-            else if (parent.Value > value)
+            else if (value > node.Value)
             {
-                return FindParent(value, ref parent.right);
+                parentNode = node;
+                return Find(value, ref node.right);
             }
 
             else
@@ -134,40 +156,105 @@ namespace BinaryTreeAssignment
         /// <returns></returns>
         public TreeNode LeftMostNodeOnRight(TreeNode nodeToDelete, ref TreeNode parent)
         {
-            //Det är nåt knas med koden vi fått i den här funktionen, kolla över noga
             parent = nodeToDelete;
             nodeToDelete = nodeToDelete.Right;
+
             while (nodeToDelete.Left != null)
             {
-
+                parent = nodeToDelete;
+                nodeToDelete = nodeToDelete.Left;
             }
-            parent = nodeToDelete;
-            nodeToDelete = nodeToDelete.Left;
+            
             return nodeToDelete;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
         public void Delete(int value)
         {
+            TreeNode nodeToDelete = Find(value, ref root);
+            
+            if(nodeToDelete == null)
+            {
+                Console.WriteLine("The value wasn't in tree.");
+                return;
+            }
+
+            if (parentNode == null)
+            {
+                root = null;
+                return;
+            }
             //fall 1
-            //Noden som ska tas bort har inga barn
+            //Noden som ska tas bort har inga barn, 
+            if (nodeToDelete.left == null && nodeToDelete.right == null)
+            {
+                if (nodeToDelete.Value == parentNode.left.Value)
+                {
+                    parentNode.left = null;
+                }
+                else
+                {
+                    parentNode.right = null;
+                }
+            }
 
             //fall 2
             //Noden som ska tas bort har ett barn
+            else if (nodeToDelete.left == null || nodeToDelete.right == null)
+            {
+                if (nodeToDelete.Value == parentNode.left.Value)
+                {
+                    if (nodeToDelete.left != null)
+                    {
+                        parentNode.left = nodeToDelete.left;
+                    }
+                    else
+                    {
+                        parentNode.left = nodeToDelete.right;
+                    }
+                }
+                else
+                {
+                    if (nodeToDelete.left != null)
+                    {
+                        parentNode.right = nodeToDelete.left;
+                    }
+                    else
+                    {
+                        parentNode.right = nodeToDelete.right;
+                    }
+                }
+            }
 
             //fall 3
             //noden som ska tas bort har två barn
-            //
-            //TreeNode successor = LeftMostNodeOnRight(nodeToDelete, ref parent);
-            //TreeNode temp = new TreeNode(successor.Value);
-            //if (parent.Left == successor)
-            //{
-            //    parent.Left = successor.Right;
-            //}
-            //else
-            //{
-                //parent.Right = successor.Right;
-            //}
-            //nodeToDelete.Value = temp.Value
+            else
+            {
+                TreeNode successor = LeftMostNodeOnRight(nodeToDelete, ref parentNode);
+                TreeNode temp = new TreeNode(successor.Value);
+                if (parentNode.Left == successor)
+                {
+                    parentNode.Left = successor.Right;
+                }
+                else
+                {
+                    parentNode.Right = successor.Right;
+                }
+                nodeToDelete.Value = temp.Value;
+            }
+            Console.WriteLine("Value " + value + " was deleted.");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void InorderTraversal()
+        {
+            InorderTraversal(root);
+            Console.WriteLine();
         }
 
         /// <summary>
@@ -176,13 +263,51 @@ namespace BinaryTreeAssignment
         /// <param name="node"></param>
         public void InorderTraversal(TreeNode node)
         {
-            BinaryTree bTree = new BinaryTree();
-            bTree.Insert(5);
-            bTree.Insert(88);
-            bTree.Insert(2);
-            bTree.Insert(33);
-            bTree.Insert(123);
-            //bTree.InorderTraversal();
+            if (node == null)
+            {
+                return;
+            }
+
+            InorderTraversal(node.left);
+            Console.Write(node.Value + " ");
+            InorderTraversal(node.right);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string DrawTree()
+        {
+            return DrawNode(root); 
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        private string DrawNode(TreeNode node)
+        {
+            if (node == null)
+            {
+                return "empty";
+            }
+
+            if ((node.left == null) && (node.right == null))
+            {
+                return "" + node.Value;
+            }
+
+            if ((node.left != null) && (node.right == null))
+            {
+                return "" + node.Value + "(" + DrawNode(node.left) + ", _";
+            }
+            if ((node.right != null) && (node.left == null))
+            {
+                return "" + node.Value + "(_, " + DrawNode(node.right) + ")";
+            }
+            return node.Value + "(" + DrawNode(node.left) + ", " + DrawNode(node.right) + ")";
         }
     }
 }

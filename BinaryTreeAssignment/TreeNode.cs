@@ -9,12 +9,19 @@ using System.Threading.Tasks;
 
 namespace BinaryTreeAssignment
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class TreeNode
     {
         private int value;
         public TreeNode left;
         public TreeNode right;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
         public TreeNode(int value)
         {
             this.value = value;
@@ -22,18 +29,27 @@ namespace BinaryTreeAssignment
             right = null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public int Value
         {
             get { return this.value; }
             set { this.value = value; }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public TreeNode Left
         {
             get { return left; }
             set { left = value; }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public TreeNode Right
         {
             get { return right; }
