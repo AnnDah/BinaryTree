@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace BinaryTreeAssignment
 {
     /// <summary>
-    /// 
+    /// Class that holds the nodes value and references to to the nodes left and right child. 
     /// </summary>
     class TreeNode
     {
@@ -19,7 +19,7 @@ namespace BinaryTreeAssignment
         public TreeNode right;
 
         /// <summary>
-        /// 
+        /// Constructor that takes the nodes value and sets it's children to null
         /// </summary>
         /// <param name="value"></param>
         public TreeNode(int value)
@@ -30,7 +30,7 @@ namespace BinaryTreeAssignment
         }
 
         /// <summary>
-        /// 
+        /// Property for variable value
         /// </summary>
         public int Value
         {
@@ -39,7 +39,7 @@ namespace BinaryTreeAssignment
         }
 
         /// <summary>
-        /// 
+        /// Property for variable left
         /// </summary>
         public TreeNode Left
         {
@@ -48,7 +48,7 @@ namespace BinaryTreeAssignment
         }
 
         /// <summary>
-        /// 
+        /// Property for variable right
         /// </summary>
         public TreeNode Right
         {

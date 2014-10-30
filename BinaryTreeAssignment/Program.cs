@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 namespace BinaryTreeAssignment
 {
     /// <summary>
-    /// 
+    /// Startup class
     /// </summary>
     class Program
     {
         /// <summary>
-        /// 
+        /// Instantiate menu class
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)

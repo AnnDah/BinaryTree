@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 namespace BinaryTreeAssignment
 {
     /// <summary>
-    /// 
+    /// CLI class
     /// </summary>
     class MainMenu
     {
         BinaryTree binaryTree = new BinaryTree();
 
         /// <summary>
-        /// 
+        /// Constructor, calls menu() to view the applications main menu
         /// </summary>
         public MainMenu()
         {
@@ -22,7 +22,7 @@ namespace BinaryTreeAssignment
         }
 
         /// <summary>
-        /// 
+        /// Main manu for the application
         /// </summary>
         private void Menu()
         {
@@ -49,9 +49,11 @@ namespace BinaryTreeAssignment
                 {
                     switch (choiceInMenu)
                     {
+                        //If input is 0 the application ends
                         case 0:
                             break;
 
+                        //If input is 1 the user can add a value to the tree
                         case 1:
                             Console.Write("Enter value to add: ");
                             int insertValue;
@@ -67,11 +69,13 @@ namespace BinaryTreeAssignment
                             }
                             break;
 
+                        //If input is 2 the user can remove a number from the tree                    
                         case 2:
                             Console.Write("Enter value to remove: ");
                             binaryTree.Delete(Convert.ToInt32(Console.ReadLine()));
                             break;
 
+                        //If input is 3 the user can search the tree for a specific value
                         case 3:
                             Console.Write("Enter value to find: ");
                             int findValue = Convert.ToInt32(Console.ReadLine());
@@ -81,14 +85,18 @@ namespace BinaryTreeAssignment
                                 Console.WriteLine("Value " + findValue + " wasn't found");
                             break;
 
+                        //If input is 4 the user can print the tree
                         case 4:
                             Console.WriteLine("Print tree...");
                             Console.WriteLine(binaryTree.DrawTree());
                             break;
 
+                        //If input is 5 the user can get all values in the tree in ascending order of size
                         case 5:
                             binaryTree.InorderTraversal();
                             break;
+
+                        //If input is 6 the user can add a number of predefined values
                         case 6:
                             binaryTree.Insert(5);
                             binaryTree.Insert(7);
@@ -99,7 +107,8 @@ namespace BinaryTreeAssignment
                             binaryTree.Insert(8);
                             binaryTree.Insert(10);
                             break;
-
+                        
+                        //If input is anything else the user get a message about invalid input
                         default:
                             Console.WriteLine("Invalid input, please try again!");
                             break;

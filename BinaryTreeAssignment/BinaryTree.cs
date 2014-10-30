@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace BinaryTreeAssignment
 {
     /// <summary>
-    /// 
+    /// Class that handle all functions connected to the binary search tree.
     /// </summary>
     class BinaryTree
     {
@@ -19,7 +19,7 @@ namespace BinaryTreeAssignment
         private int count = 0;
 
         /// <summary>
-        /// 
+        /// Property to the variable count, returns the number of nodes in the tree.
         /// </summary>
         public int Count
         {
@@ -27,11 +27,12 @@ namespace BinaryTreeAssignment
         }
 
         /// <summary>
-        /// Metoden 'Insert' lägger till ett värde i trädet genom att anropa metoden i det fallet då trädet redan har noder. 
-        /// Om värdet redan finns i trädet ska ett 'Exception' kastas
+        /// Adds a value to the tree. If the tree allready has nodes it calls the function Add() to insert the value, if the 
+        /// tree doesn't have any nodes it sets the value to the root node instead.
+        /// If the value allready exists in the tree an exception is thrown.
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="value">Value to be put in the tree</param>
+        /// <returns>the node if it gets added else returns null.</returns>
         public TreeNode Insert(int value)
         {
             TreeNode node = new TreeNode(value);
@@ -57,13 +58,12 @@ namespace BinaryTreeAssignment
         }
 
         /// <summary>
-        /// Metoden 'Add' är rekursiv och anropar sig själv med antingen den aktuella nodens vänstra eller högra barn.
-        /// Om värdet är mindre än den aktuella nodens barn anropas 'Add' metoden med det vänstra barnet. 
-        /// Är värdet större än den aktuella nodens barn anropas 'Add' metoden med det högra barnet. 
-        /// Detta sker ända tills den aktuella nodens barn pekar mot 'null'. Byt ut referensen till 'null' så att den pekar på den nya noden.
+        /// A recursive method that calls itself with either the nodes left or right child depending on weather the 
+        /// incoming value is smaller or greater than the value of the node. When the nodes children point at null 
+        /// the function ends.
         /// </summary>
-        /// <param name="node"></param>
-        /// <param name="tree"></param>
+        /// <param name="node">node to be added in tree</param>
+        /// <param name="tree">node to compare with the node to be added</param>
         public void Add(TreeNode node, ref TreeNode tree)
         {
             if (FindValue(node.Value) != null)
@@ -86,14 +86,10 @@ namespace BinaryTreeAssignment
         }
 
         /// <summary>
-        /// Search through the tree until value is found. The search starts at the root node.
-        /// Metoden jämför två värden, är värdet lika med den jämförande nodens värde har vi hittat värdet i trädet. 
-        /// Är det sökta värdet större än nodens värde kan värdet finnas i nodens högra barn och om värdet är mindre 
-        /// än nodens värde kan värdet finnas i nodens vänstra barn. Om något av de följande barnen är 'null' så finns 
-        /// inte värdet i trädet. 
+        /// Calls the function Find() if the tree isn't empty.
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="value">Value to be found</param>
+        /// <returns>Returns value and it's parent or null if the tree is without nodes</returns>
         public TreeNode FindValue(int value)
         {
             if (root != null)
@@ -108,13 +104,15 @@ namespace BinaryTreeAssignment
         }
 
         /// <summary>
+        /// Search through the tree until value is found. The search starts at the root node. The function is recursive so 
+        /// it keeps calling itself until the value is found with either the nodes left or right child.
         /// Metoden letar efter ett värde i trädet, om värdet hittas returneras noden som innehåller detta värde. 
         /// Samtidigt så returneras nodens förälder genom parameter 'ref TreeNode parent'. Hittas inte värdet returneras 'null'. 
         /// Om den sökta noden är roten är föräldern null. 
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="parent"></param>
-        /// <returns></returns>
+        /// <param name="value">Value to be found</param>
+        /// <param name="node">node to be compared with the value to be found</param>
+        /// <returns>If the the value is found it returns the node containing the value else it returns null</returns>
         private TreeNode Find(int value, ref TreeNode node)
         {
             if (node == null)
@@ -146,14 +144,11 @@ namespace BinaryTreeAssignment
         }
 
         /// <summary>
-        /// Metoden letar efter och returnerar den vänstraste noden i ett subträd. Subträdet börjar på det högra barnet till 
-        /// den noden som ska tas bort ('nodeToDelete'). Samtidigt så returneras nodens förälder genom 'ref parent'. 
-        /// Den här metoden kommer att användas i nästkommande 'Delete' metod. Då vi tar hänsyn till tre olika fall när vi ska 
-        /// ta bort en nod kommer ett av fallen att använda sig av den här metoden. Fallet är när en nod har två barn
+        /// FUnction that search for and returns the leftmost node in a subtree. The search starts at the right child of the node to be deleted.
         /// </summary>
-        /// <param name="nodeToDelete"></param>
-        /// <param name="parent"></param>
-        /// <returns></returns>
+        /// <param name="nodeToDelete">node that are to be deleted</param>
+        /// <param name="parent">nodes parent</param>
+        /// <returns>the node to be deleted</returns>
         public TreeNode LeftMostNodeOnRight(TreeNode nodeToDelete, ref TreeNode parent)
         {
             parent = nodeToDelete;
@@ -169,26 +164,28 @@ namespace BinaryTreeAssignment
         }
 
         /// <summary>
-        /// 
+        /// Function to delete a node. It has different spproaches weather the node has no, one or two children.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">value to be deleted</param>
         public void Delete(int value)
         {
             TreeNode nodeToDelete = Find(value, ref root);
             
+            //The value wasn't found in the tree
             if(nodeToDelete == null)
             {
                 Console.WriteLine("The value wasn't in tree.");
                 return;
             }
 
+            //If the root contains the value the root gets deleted
             if (parentNode == null)
             {
                 root = null;
                 return;
             }
-            //fall 1
-            //Noden som ska tas bort har inga barn, 
+         
+            //The node to be deleted has no children
             if (nodeToDelete.left == null && nodeToDelete.right == null)
             {
                 if (nodeToDelete.Value == parentNode.left.Value)
@@ -201,8 +198,7 @@ namespace BinaryTreeAssignment
                 }
             }
 
-            //fall 2
-            //Noden som ska tas bort har ett barn
+            //The node to be deleted has one child
             else if (nodeToDelete.left == null || nodeToDelete.right == null)
             {
                 if (nodeToDelete.Value == parentNode.left.Value)
@@ -229,8 +225,7 @@ namespace BinaryTreeAssignment
                 }
             }
 
-            //fall 3
-            //noden som ska tas bort har två barn
+            //The node to be deleted has two children
             else
             {
                 TreeNode successor = LeftMostNodeOnRight(nodeToDelete, ref parentNode);
@@ -249,7 +244,7 @@ namespace BinaryTreeAssignment
         }
 
         /// <summary>
-        /// 
+        /// Calls the function InorderTraversal(Treenode node)
         /// </summary>
         public void InorderTraversal()
         {
@@ -258,7 +253,7 @@ namespace BinaryTreeAssignment
         }
 
         /// <summary>
-        /// Print the binary tree in ascending order of size
+        /// Prints the binary tree in ascending order of size
         /// </summary>
         /// <param name="node"></param>
         public void InorderTraversal(TreeNode node)
@@ -274,19 +269,19 @@ namespace BinaryTreeAssignment
         }
 
         /// <summary>
-        /// 
+        /// Prints the tree
         /// </summary>
-        /// <returns></returns>
+        /// <returns>the printed tree</returns>
         public string DrawTree()
         {
             return DrawNode(root); 
         }
 
         /// <summary>
-        /// 
+        /// Prints the tree, recursive
         /// </summary>
-        /// <param name="node"></param>
-        /// <returns></returns>
+        /// <param name="node">the current node in the tree</param>
+        /// <returns>the all the values in the tree</returns>
         private string DrawNode(TreeNode node)
         {
             if (node == null)
