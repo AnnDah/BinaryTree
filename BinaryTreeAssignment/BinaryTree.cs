@@ -178,8 +178,8 @@ namespace BinaryTreeAssignment
                 return;
             }
 
-            //If the root contains the value the root gets deleted
-            if (parentNode == null)
+            //If the root contains the value and is without children the root gets deleted
+            if (parentNode == null && nodeToDelete.left == null && nodeToDelete.right == null)
             {
                 root = null;
                 return;
