@@ -106,9 +106,6 @@ namespace BinaryTreeAssignment
         /// <summary>
         /// Search through the tree until value is found. The search starts at the root node. The function is recursive so 
         /// it keeps calling itself until the value is found with either the nodes left or right child.
-        /// Metoden letar efter ett värde i trädet, om värdet hittas returneras noden som innehåller detta värde. 
-        /// Samtidigt så returneras nodens förälder genom parameter 'ref TreeNode parent'. Hittas inte värdet returneras 'null'. 
-        /// Om den sökta noden är roten är föräldern null. 
         /// </summary>
         /// <param name="value">Value to be found</param>
         /// <param name="node">node to be compared with the value to be found</param>
